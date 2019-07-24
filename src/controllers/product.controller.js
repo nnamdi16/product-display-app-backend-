@@ -11,8 +11,6 @@ exports.getAll = async (req, res, next) => {
   }
 };
 
-
-
 exports.getOne = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -30,13 +28,20 @@ exports.getOne = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const image  = req.file.location;
-    const { name, description, price, category, color } = req.body;
+    // const image = req.file.location;
+    const { name, description, price, image } = req.body;
 
-    const product = new Product({ name, description, price, category, image, color });
+    const product = new Product({
+      name,
+      description,
+      price,
+      // category,
+      image
+      // color
+    });
     await product.save();
 
-    res.json(sendResponse(product, httpStatus.OK, null))
+    res.json(sendResponse(product, httpStatus.OK, null));
   } catch (error) {
     next(error);
   }
@@ -48,31 +53,22 @@ exports.update = async (req, res, next) => {
 
     let product = await Product.findById(id);
 
-    console.log(req);
-
     let {
       name = product.name,
       description = product.description,
       price = product.price,
-      category = product.category,
-      color = product.color 
+      image = product.image
     } = req.body;
-
-    let image = req.file ? req.file.location : product.image;
 
     const newProduct = {
       ...product.toObject(),
       name: name,
       description: description,
       price: price,
-      image: image,
-      category: category,
-      color: color
+      image: image
     };
 
-    product = await Product.findByIdAndUpdate( {_id: id}, 
-      newProduct, 
-      {
+    product = await Product.findByIdAndUpdate({ _id: id }, newProduct, {
       new: true
     });
 
@@ -85,7 +81,7 @@ exports.update = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const instance = await Product.findOneAndRemove(id);
+    const instance = await Product.findByIdAndDelete(id);
     if (!instance) {
       return res.json(
         sendResponse("This product does not exist", httpStatus.OK, null)
