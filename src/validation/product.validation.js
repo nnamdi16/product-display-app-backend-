@@ -7,8 +7,9 @@ module.exports = {
       name: Joi.string().required(),
       description: Joi.string().required(),
       price: Joi.string().required(),
-      category: Joi.string().required(),
-      color: Joi.string().required()
+      image: Joi.string().required()
+      // category: Joi.string().required(),
+      // color: Joi.string().required()
     }
   },
   // UPDATE /api/products/:id
@@ -17,8 +18,7 @@ module.exports = {
       name: Joi.string(),
       description: Joi.string(),
       price: Joi.string(),
-      category: Joi.string(),
-      color: Joi.string()
+      image: Joi.string()
     },
     params: {
       id: Joi.string()
