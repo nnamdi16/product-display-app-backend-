@@ -13,18 +13,18 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  category: {
-    type: String,
-    required: true
-  },
+  // category: {
+  //   type: String,
+  //   required: true
+  // },
   image: {
     type: String,
     required: true
-  },
-  color: {
-    type: String,
-    required: true
   }
+  // color: {
+  //   type: String,
+  //   required: true
+  // }
 });
 
 exports.Product = mongoose.model("Product", ProductSchema);
